@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener {
 
-//            takePicture()
+            takePicture()
         }
 
 
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
         val takeCaptureBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
 
-        takeCaptureBuilder.addTarget(surface)
+        takeCaptureBuilder.addTarget(imageReader.surface)
 
         takeCaptureBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
 
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         backgroundHandler = Handler(backgroundThread?.looper)
 
         if (textureView.isAvailable) {
-            openCamera(800,600)
+            openCamera(300,300)
         } else {
             textureView.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
                 override fun onSurfaceTextureSizeChanged(p0: SurfaceTexture?, p1: Int, p2: Int) {}
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onSurfaceTextureAvailable(p0: SurfaceTexture?, width: Int, height: Int) {
 
-                    openCamera(800,600)
+                    openCamera(300,300)
                 }
             }
         }
@@ -166,11 +166,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        imageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
+        imageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 2)
         imageReader.setOnImageAvailableListener(object : ImageReader.OnImageAvailableListener {
             override fun onImageAvailable(p0: ImageReader?) {
-
-
 
                 Log.d("Aaaa", "A")
             }
@@ -199,7 +197,7 @@ class MainActivity : AppCompatActivity() {
     private fun createCameraPreviewSession() {
        try {
            val texture = textureView.surfaceTexture
-           texture.setDefaultBufferSize(800, 600)
+           texture.setDefaultBufferSize(300, 300)
            surface = Surface(texture)
 
            captureRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
@@ -207,7 +205,7 @@ class MainActivity : AppCompatActivity() {
 
 
            cameraDevice?.createCaptureSession(
-               Arrays.asList(surface),
+               Arrays.asList(surface,imageReader.surface),
                object : CameraCaptureSession.StateCallback() {
                    override fun onConfigureFailed(p0: CameraCaptureSession) {
 
