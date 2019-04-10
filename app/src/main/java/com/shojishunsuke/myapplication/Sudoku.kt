@@ -1,39 +1,38 @@
 package com.shojishunsuke.myapplication
 
-import java.io.BufferedReader
-import java.io.File
+import com.google.firebase.ml.vision.text.FirebaseVisionText
 import java.io.FileNotFoundException
-import java.io.FileReader
 
-class Sudoku {
+class Sudoku(texts: FirebaseVisionText) {
     private val data = Array(9) { Array(9, { it }) }
+    private val texts = texts
 
     fun readQuestion() {
         try {
-            val file =
-                File("/Users/shojishunsuke/AndroidStudioProjects/MyApplication2/app/src/main/res/assets/question.txt")
+//            val file =
+//                File("/Users/shojishunsuke/AndroidStudioProjects/MyApplication2/app/src/main/res/assets/question.txt")
+//
+//            val fileReader = FileReader(file)
+//            val bufferedReader = BufferedReader(fileReader)
+            for (block in texts.textBlocks)
+                for (line in block.lines) {
+                    var count = 0
+                    while (count < 9) {
 
-            val fileReader = FileReader(file)
-            val bufferedReader = BufferedReader(fileReader)
+                        val lineText = line.text
 
-            var count = 0
+                        for (i in 0..8) {
 
-            while (count < 9) {
+                            if (count < 9) {
+                                var w: Int = Integer.parseInt(lineText[i].toString())
+                                data[count][i] = w
+                            }
+                        }
 
-                var line = bufferedReader.readLine()
-
-                for (i in 0..8) {
-
-                    if (count < 9) {
-                        var w: Int = Integer.parseInt(line[i].toString())
-                        data[count][i] = w
+                        count++
                     }
                 }
 
-                count++
-            }
-
-            bufferedReader.close()
 
         } catch (e: FileNotFoundException) {
             println(e)
@@ -59,26 +58,26 @@ class Sudoku {
 
 
                         for (n in 0..8) {
-                            if (data[x][n] != 0) num[data[x][n] -1] = 1
+                            if (data[x][n] != 0) num[data[x][n] - 1] = 1
                         }
 
                         for (n in 0..8) {
-                            if (data[n][y] != 0) num[data[n][y]-1] = 1
+                            if (data[n][y] != 0) num[data[n][y] - 1] = 1
                         }
 
-                        for (s in qtX*3..qtX*3 + 2) {
-                            for (t in qtY*3..qtY*3+2){
-                                if (data[s][t]!= 0)num[data[s][t]-1] = 1
+                        for (s in qtX * 3..qtX * 3 + 2) {
+                            for (t in qtY * 3..qtY * 3 + 2) {
+                                if (data[s][t] != 0) num[data[s][t] - 1] = 1
                             }
                         }
 
-                        for (i in 0..8){
-                            if (num[i] == 1)count++
-                            else if (num[i] == 0)  renew = i+1
+                        for (i in 0..8) {
+                            if (num[i] == 1) count++
+                            else if (num[i] == 0) renew = i + 1
                         }
 
-                        if (count ==8){
-                            data[x][y] =renew
+                        if (count == 8) {
+                            data[x][y] = renew
                         }
                     }
                 }
@@ -87,13 +86,13 @@ class Sudoku {
             }
 
             var count = 0
-            for (x in 0..8){
-                for (y in 0..8){
-                    if (data[x][y] !=0) count++
+            for (x in 0..8) {
+                for (y in 0..8) {
+                    if (data[x][y] != 0) count++
                 }
             }
 
-            if (count == 81)isDone = true
+            if (count == 81) isDone = true
 
 
         } while (!isDone)
@@ -101,9 +100,9 @@ class Sudoku {
 
     }
 
-    fun view(){
-        for (x in 0..8){
-            for (y in 0..8){
+    fun view() {
+        for (x in 0..8) {
+            for (y in 0..8) {
                 System.out.print(data[x][y])
             }
         }
@@ -111,10 +110,4 @@ class Sudoku {
 }
 
 
-fun main(args: Array<String>) {
-    val  sudoku = Sudoku()
-    sudoku.readQuestion()
-    sudoku.solve()
-    sudoku.view()
-}
 
