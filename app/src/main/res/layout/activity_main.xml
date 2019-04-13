@@ -11,7 +11,7 @@
            android:id="@+id/captureButton"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
-           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintEnd_toStartOf="@id/viewAnswer"
            android:text="capture"
            android:layout_marginTop="12dp"
            android:layout_width="wrap_content"
@@ -26,6 +26,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 
+<Button
+        android:id="@+id/viewAnswer"
+        android:text="答え"
+        app:layout_constraintTop_toTopOf="@id/captureButton"
+        app:layout_constraintBottom_toBottomOf="@id/captureButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/captureButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

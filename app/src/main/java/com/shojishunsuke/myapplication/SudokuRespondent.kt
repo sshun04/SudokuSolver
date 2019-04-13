@@ -3,34 +3,36 @@ package com.shojishunsuke.myapplication
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import java.io.FileNotFoundException
 
-class Sudoku(texts: FirebaseVisionText) {
+class SudokuRespondent(texts: FirebaseVisionText) : Respondent() {
     private val data = Array(9) { Array(9, { it }) }
     private val texts = texts
-
+    override
     fun readQuestion() {
         try {
-//            val file =
-//                File("/Users/shojishunsuke/AndroidStudioProjects/MyApplication2/app/src/main/res/assets/question.txt")
-//
-//            val fileReader = FileReader(file)
-//            val bufferedReader = BufferedReader(fileReader)
+            var count = 0
+
             for (block in texts.textBlocks)
                 for (line in block.lines) {
-                    var count = 0
-                    while (count < 9) {
 
-                        val lineText = line.text
 
-                        for (i in 0..8) {
+                    val lineText = line.text
 
-                            if (count < 9) {
-                                var w: Int = Integer.parseInt(lineText[i].toString())
-                                data[count][i] = w
-                            }
+                    for (i in 0..8) {
+
+
+
+
+                        if (count < 9) {
+
+                            var w: Int = Integer.parseInt(lineText[i].toString())
+                            data[count][i] = w
                         }
 
-                        count++
+                        if (i == 8)count++
+
+
                     }
+
                 }
 
 
@@ -43,7 +45,8 @@ class Sudoku(texts: FirebaseVisionText) {
     }
 
 
-    fun solve() {
+    override
+    fun trail() {
         var isDone = false
 
         do {
@@ -98,6 +101,8 @@ class Sudoku(texts: FirebaseVisionText) {
         } while (!isDone)
 
 
+
+
     }
 
     fun view() {
@@ -106,6 +111,11 @@ class Sudoku(texts: FirebaseVisionText) {
                 System.out.print(data[x][y])
             }
         }
+    }
+
+    override fun printAnswer(): Array<Array<Int>> {
+        return data
+
     }
 }
 
